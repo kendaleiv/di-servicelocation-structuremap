@@ -6,7 +6,7 @@ namespace Core
     {
         public static T GetInstance<T>()
         {
-            return ObjectFactory.GetInstance<T>();
+            return ObjectFactory.Container.GetInstance<T>();
         }
     }
 }

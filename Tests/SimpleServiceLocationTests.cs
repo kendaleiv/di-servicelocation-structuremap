@@ -22,7 +22,7 @@ namespace Tests
         [Fact]
         public void UsingFacade()
         {
-            ObjectFactory.Initialize(x =>
+            ObjectFactory.Container.Configure(x =>
             {
                 x.For<IService>().Use<Service>();
             });
