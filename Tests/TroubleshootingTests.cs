@@ -10,12 +10,12 @@ namespace Tests
         [Fact]
         public void WhatDoIHave()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>();
             });
 
-            var whatDoIHave = ObjectFactory.Container.WhatDoIHave();
+            var whatDoIHave = container.WhatDoIHave();
             Trace.Write(whatDoIHave);
         }
     }

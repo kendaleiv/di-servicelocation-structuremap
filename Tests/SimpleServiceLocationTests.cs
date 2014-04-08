@@ -9,12 +9,12 @@ namespace Tests
         [Fact]
         public void ServiceLocation()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>();
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.IsType<Service>(service);
         }

@@ -10,13 +10,13 @@ namespace Tests
         [Fact]
         public void NamedInstance()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>().Named("A");
                 x.For<IService>().Use<ServiceB>().Named("B");
             });
 
-            var service = ObjectFactory.GetNamedInstance<IService>("A");
+            var service = container.GetInstance<IService>("A");
 
             Assert.IsType<Service>(service);
         }
@@ -24,13 +24,13 @@ namespace Tests
         [Fact]
         public void GetInstanceT_MultipleNamedInstances_LastInWins()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>().Named("A");
                 x.For<IService>().Use<ServiceB>().Named("B");
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.IsType<ServiceB>(service);
         }
@@ -45,13 +45,13 @@ namespace Tests
         {
             var value = Guid.NewGuid().ToString();
 
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<ServiceWithCtorArg>()
                     .Ctor<string>("id").Is(value);
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.Equal(value, service.Id);
         }

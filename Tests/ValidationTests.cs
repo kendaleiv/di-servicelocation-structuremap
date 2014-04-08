@@ -10,24 +10,24 @@ namespace Tests
         [Fact]
         public void VerifyValidConfiguration()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>();
             });
 
-            ObjectFactory.Container.AssertConfigurationIsValid();
+            container.AssertConfigurationIsValid();
         }
 
         [Fact]
         public void VerifyInvalidConfiguration()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<BrokenService>();
             });
 
             Assert.Throws<StructureMapConfigurationException>(
-                () => ObjectFactory.Container.AssertConfigurationIsValid());
+                () => container.AssertConfigurationIsValid());
         }
 
         public class BrokenService : IService

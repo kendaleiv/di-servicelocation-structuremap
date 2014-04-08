@@ -13,7 +13,7 @@ namespace Tests
             var logger = Mock.Of<ILogger>();
             Mock.Get(logger).Setup(x => x.Log(It.IsAny<string>()));
 
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>().DecorateWith("LoggingService", (context, svc) =>
                 {
@@ -21,7 +21,7 @@ namespace Tests
                 });
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
             var id = service.Id;
 
             Mock.Get(logger).Verify(x => x.Log(It.IsAny<string>()), Times.Once());

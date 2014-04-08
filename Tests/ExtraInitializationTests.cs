@@ -11,7 +11,7 @@ namespace Tests
         {
             var ran = false;
 
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>().OnCreation("CustomOnCreationCode", (context, myService) =>
                 {
@@ -22,7 +22,7 @@ namespace Tests
                 });
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.True(ran);
         }
@@ -30,12 +30,12 @@ namespace Tests
         [Fact]
         public void SettingPropertyDuringInitialization_SetProperty()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<TypeWithSetter>().Use<TypeWithSetter>().SetProperty(svc => svc.Id = "value");
             });
 
-            var service = ObjectFactory.GetInstance<TypeWithSetter>();
+            var service = container.GetInstance<TypeWithSetter>();
 
             Assert.Equal("value", service.Id);
         }

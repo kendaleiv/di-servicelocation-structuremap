@@ -19,12 +19,12 @@ namespace Tests
         [Fact]
         public void Add()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.AddRegistry<ServiceRegistry>();
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.IsType<Service>(service);
         }
@@ -32,7 +32,7 @@ namespace Tests
         [Fact]
         public void Scan()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.Scan(scan =>
                 {
@@ -41,7 +41,7 @@ namespace Tests
                 });
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.IsType<Service>(service);
         }

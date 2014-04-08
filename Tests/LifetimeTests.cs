@@ -10,13 +10,13 @@ namespace Tests
         [Fact]
         public void Hybrid()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().LifecycleIs<HybridLifecycle>().Use<Service>();
             });
 
-            var instance1 = ObjectFactory.GetInstance<IService>();
-            var instance2 = ObjectFactory.GetInstance<IService>();
+            var instance1 = container.GetInstance<IService>();
+            var instance2 = container.GetInstance<IService>();
 
             Assert.Equal(instance1.Id, instance2.Id);
         }
@@ -24,13 +24,13 @@ namespace Tests
         [Fact]
         public void HybridSession()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().LifecycleIs<HybridSessionLifecycle>().Use<Service>();
             });
 
-            var instance1 = ObjectFactory.GetInstance<IService>();
-            var instance2 = ObjectFactory.GetInstance<IService>();
+            var instance1 = container.GetInstance<IService>();
+            var instance2 = container.GetInstance<IService>();
 
             Assert.Equal(instance1.Id, instance2.Id);
         }
@@ -38,13 +38,13 @@ namespace Tests
         [Fact]
         public void Singleton()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Singleton().Use<Service>();
             });
 
-            var instance1 = ObjectFactory.GetInstance<IService>();
-            var instance2 = ObjectFactory.GetInstance<IService>();
+            var instance1 = container.GetInstance<IService>();
+            var instance2 = container.GetInstance<IService>();
 
             Assert.Equal(instance1.Id, instance2.Id);
         }
@@ -52,13 +52,13 @@ namespace Tests
         [Fact]
         public void Transient()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Transient().Use<Service>();
             });
 
-            var instance1 = ObjectFactory.GetInstance<IService>();
-            var instance2 = ObjectFactory.GetInstance<IService>();
+            var instance1 = container.GetInstance<IService>();
+            var instance2 = container.GetInstance<IService>();
 
             Assert.NotEqual(instance1.Id, instance2.Id);
         }
