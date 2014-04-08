@@ -1,5 +1,6 @@
 ﻿using Core;
 using StructureMap.Configuration.DSL;
+using StructureMap.Web.Pipeline;
 
 namespace Web.DependencyResolution
 {
@@ -7,7 +8,7 @@ namespace Web.DependencyResolution
     {
         public ServiceRegistry()
         {
-            For<IService>().HybridHttpOrThreadLocalScoped().Use<Service>();
+            For<IService>().LifecycleIs<HybridLifecycle>().Use<Service>();
         }
     }
 }

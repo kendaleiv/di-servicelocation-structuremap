@@ -15,7 +15,7 @@ namespace Tests
 
             ObjectFactory.Initialize(x =>
             {
-                x.For<IService>().Use<Service>().EnrichWith((context, svc) =>
+                x.For<IService>().Use<Service>().DecorateWith("LoggingService", (context, svc) =>
                 {
                     return new LoggingService(svc, logger);
                 });

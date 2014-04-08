@@ -15,7 +15,7 @@ namespace Tests
                 x.For<IService>().Use<Service>();
             });
 
-            var whatDoIHave = ObjectFactory.WhatDoIHave();
+            var whatDoIHave = ObjectFactory.Container.WhatDoIHave();
             Trace.Write(whatDoIHave);
         }
     }

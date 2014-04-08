@@ -1,5 +1,6 @@
 ﻿using Core;
 using StructureMap;
+using StructureMap.Graph;
 using StructureMap.Configuration.DSL;
 using Xunit;
 

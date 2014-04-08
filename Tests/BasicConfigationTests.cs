@@ -47,9 +47,8 @@ namespace Tests
 
             ObjectFactory.Initialize(x =>
             {
-                // appSetting myAppSetting does not exist, will use defaultValue
                 x.For<IService>().Use<ServiceWithCtorArg>()
-                    .Ctor<string>("id").EqualToAppSetting("myAppSetting", defaultValue: value);
+                    .Ctor<string>("id").Is(value);
             });
 
             var service = ObjectFactory.GetInstance<IService>();

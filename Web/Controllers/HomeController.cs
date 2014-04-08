@@ -17,7 +17,7 @@ namespace Web.Controllers
         {
             ViewBag.Title = "Home Page";
             ViewBag.ServiceId = _service.Id;
-            ViewBag.WhatDoIHave = ObjectFactory.WhatDoIHave();
+            ViewBag.WhatDoIHave = ObjectFactory.Container.WhatDoIHave();
 
             return View();
         }

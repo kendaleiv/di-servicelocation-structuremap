@@ -1,6 +1,5 @@
 ﻿using Core;
 using StructureMap;
-using StructureMap.Exceptions;
 using System;
 using Xunit;
 
@@ -16,7 +15,7 @@ namespace Tests
                 x.For<IService>().Use<Service>();
             });
 
-            ObjectFactory.AssertConfigurationIsValid();
+            ObjectFactory.Container.AssertConfigurationIsValid();
         }
 
         [Fact]
@@ -28,7 +27,7 @@ namespace Tests
             });
 
             Assert.Throws<StructureMapConfigurationException>(
-                () => ObjectFactory.AssertConfigurationIsValid());
+                () => ObjectFactory.Container.AssertConfigurationIsValid());
         }
 
         public class BrokenService : IService

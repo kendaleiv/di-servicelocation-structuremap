@@ -1,5 +1,6 @@
 ﻿using Core;
 using StructureMap;
+using StructureMap.Web.Pipeline;
 using Xunit;
 
 namespace Tests
@@ -11,7 +12,21 @@ namespace Tests
         {
             ObjectFactory.Initialize(x =>
             {
-                x.For<IService>().HybridHttpOrThreadLocalScoped().Use<Service>();
+                x.For<IService>().LifecycleIs<HybridLifecycle>().Use<Service>();
+            });
+
+            var instance1 = ObjectFactory.GetInstance<IService>();
+            var instance2 = ObjectFactory.GetInstance<IService>();
+
+            Assert.Equal(instance1.Id, instance2.Id);
+        }
+
+        [Fact]
+        public void HybridSession()
+        {
+            ObjectFactory.Initialize(x =>
+            {
+                x.For<IService>().LifecycleIs<HybridSessionLifecycle>().Use<Service>();
             });
 
             var instance1 = ObjectFactory.GetInstance<IService>();
