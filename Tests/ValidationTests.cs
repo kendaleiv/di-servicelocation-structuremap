@@ -8,6 +8,18 @@ namespace Tests
     public class ValidationTests
     {
         [Fact]
+        public void MissingRequiredConstructorArgument()
+        {
+            var container = new Container(x =>
+            {
+                x.For<IService>().Use<ServiceWithCtorArg>();
+            });
+
+            Assert.Throws<StructureMapConfigurationException>(
+                () => container.AssertConfigurationIsValid());
+        }
+
+        [Fact]
         public void VerifyValidConfiguration()
         {
             var container = new Container(x =>
