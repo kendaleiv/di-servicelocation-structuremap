@@ -1,6 +1,5 @@
 ﻿using Core;
 using StructureMap;
-using System.Diagnostics;
 using Xunit;
 
 namespace Tests
@@ -37,7 +36,24 @@ new Service()
             });
 
             var whatDoIHave = container.WhatDoIHave();
-            Trace.Write(whatDoIHave);
+
+            var expectedWhatDoIHave = @"
+
+===================================================================================================
+PluginType           Namespace        Lifecycle     Description                           Name     
+---------------------------------------------------------------------------------------------------
+Func<TResult>        System           Transient     Open Generic Template for Func<>      (Default)
+---------------------------------------------------------------------------------------------------
+Func<T, TResult>     System           Transient     Open Generic Template for Func<,>     (Default)
+---------------------------------------------------------------------------------------------------
+IContainer           StructureMap     Singleton     Object:  StructureMap.Container       (Default)
+---------------------------------------------------------------------------------------------------
+IService             Core             Transient     Core.Service                          (Default)
+---------------------------------------------------------------------------------------------------
+Lazy<T>              System           Transient     Open Generic Template for Func<>      (Default)
+===================================================================================================";
+
+            Assert.Equal(expectedWhatDoIHave, whatDoIHave);
         }
     }
 }
