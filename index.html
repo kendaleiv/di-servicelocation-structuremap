@@ -311,6 +311,30 @@ public void MissingRequiredConstructorArgument()
                 </section>
 
                 <section>
+                    <h1>Helpful Errors</h1>
+                    <pre><code data-trim contenteditable>
+[Fact]
+public void MissingConfiguration()
+{
+    var container = new Container();
+
+    var exception = Assert.Throws&lt;StructureMapConfigurationException&gt;(
+        () =&gt; container.GetInstance&lt;IService&gt;());
+
+    var expectedMessage =
+@"No default Instance is registered and cannot be automatically determined for type 'Core.IService'
+
+There is no configuration specified for Core.IService
+
+1.) Container.GetInstance(Core.IService)
+";
+
+    Assert.Equal(expectedMessage, exception.Message);
+}
+                    </code></pre>
+                </section>
+
+                <section>
                     <h1>Troubleshooting</h1>
                     <img src="https://i.chzbgr.com/maxW500/4226478080/hDEAEFE01/" />
                 </section>
