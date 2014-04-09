@@ -28,7 +28,7 @@ namespace Tests
         [Fact]
         public void ScanTheCallingAssemblyForRegistries()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.Scan(scan =>
                 {
@@ -37,7 +37,7 @@ namespace Tests
                 });
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.IsType<Service>(service);
         }
@@ -45,7 +45,7 @@ namespace Tests
         [Fact]
         public void ScanTheCallingAssemblyWithDefaultConventions()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.Scan(scan =>
                 {
@@ -54,7 +54,7 @@ namespace Tests
                 });
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.IsType<Service>(service);
         }
@@ -62,7 +62,7 @@ namespace Tests
         [Fact]
         public void ScanTheCallingAssemblyWithCustomConventions()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.Scan(scan =>
                 {
@@ -71,7 +71,7 @@ namespace Tests
                 });
             });
 
-            var service = ObjectFactory.GetInstance<IService>();
+            var service = container.GetInstance<IService>();
 
             Assert.IsType<Service>(service);
         }

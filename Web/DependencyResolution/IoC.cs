@@ -18,6 +18,7 @@
 
 using Core;
 using StructureMap;
+using StructureMap.Graph;
 namespace Web.DependencyResolution {
     public static class IoC {
         public static IContainer Initialize() {

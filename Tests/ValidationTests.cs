@@ -1,6 +1,5 @@
 ﻿using Core;
 using StructureMap;
-using StructureMap.Exceptions;
 using System;
 using Xunit;
 
@@ -9,26 +8,38 @@ namespace Tests
     public class ValidationTests
     {
         [Fact]
+        public void MissingRequiredConstructorArgument()
+        {
+            var container = new Container(x =>
+            {
+                x.For<IService>().Use<ServiceWithCtorArg>();
+            });
+
+            Assert.Throws<StructureMapConfigurationException>(
+                () => container.AssertConfigurationIsValid());
+        }
+
+        [Fact]
         public void VerifyValidConfiguration()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<Service>();
             });
 
-            ObjectFactory.AssertConfigurationIsValid();
+            container.AssertConfigurationIsValid();
         }
 
         [Fact]
         public void VerifyInvalidConfiguration()
         {
-            ObjectFactory.Initialize(x =>
+            var container = new Container(x =>
             {
                 x.For<IService>().Use<BrokenService>();
             });
 
             Assert.Throws<StructureMapConfigurationException>(
-                () => ObjectFactory.AssertConfigurationIsValid());
+                () => container.AssertConfigurationIsValid());
         }
 
         public class BrokenService : IService
