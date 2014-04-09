@@ -184,12 +184,12 @@ public class MyClass
 [Fact]
 public void ServiceLocation()
 {
-    ObjectFactory.Initialize(x =>
+    var container = new Container(x =>
     {
         x.For&lt;IService&gt;().Use&lt;Service&gt;();
     });
 
-    var service = ObjectFactory.GetInstance&lt;IService&gt;();
+    var service = container.GetInstance&lt;IService&gt;();
 
     Assert.IsType&lt;Service&gt;(service);
 }
@@ -210,12 +210,12 @@ public class ServiceRegistry : Registry
 [Fact]
 public void Add()
 {
-    ObjectFactory.Initialize(x =>
+    var container = new Container(x =&gt;
     {
         x.AddRegistry&lt;ServiceRegistry&gt;();
     });
 
-    var service = ObjectFactory.GetInstance&lt;IService&gt;();
+    var service = container.GetInstance&lt;IService&gt;();
 
     Assert.IsType&lt;Service&gt;(service);
 }
@@ -228,16 +228,16 @@ public void Add()
 [Fact]
 public void Scan()
 {
-    ObjectFactory.Initialize(x =>
+    var container = new Container(x =&gt;
     {
-        x.Scan(scan =>
+        x.Scan(scan =&gt;
         {
             scan.TheCallingAssembly();
             scan.LookForRegistries();
         });
     });
 
-    var service = ObjectFactory.GetInstance&lt;IService&gt;();
+    var service = container.GetInstance&lt;IService&gt;();
 
     Assert.IsType&lt;Service&gt;(service);
 }
@@ -276,28 +276,20 @@ public class ServiceIdController : ApiController
                 <section>
                     <h2>StructureMap Lifetimes</h2>
                     <br />
-                    Hybrid
                     <pre><code data-trim contenteditable>
-ObjectFactory.Initialize(x =>
-{
-    x.For&lt;IService&gt;().HybridHttpOrThreadLocalScoped().Use&lt;Service&gt;();
-});
+x.For&lt;IService&gt;().LifecycleIs&lt;HybridLifecycle&gt;().Use&lt;Service&gt;();
                     </code></pre>
-
-                    Singleton
+                    <br />
                     <pre><code data-trim contenteditable>
-ObjectFactory.Initialize(x =>
-{
-    x.For&lt;IService&gt;().Singleton().Use&lt;Service&gt;();
-});
+x.For&lt;IService&gt;().LifecycleIs&lt;HybridSessionLifecycle&gt;().Use&lt;Service&gt;();
                     </code></pre>
-
-                    Transient
+                    <br />
                     <pre><code data-trim contenteditable>
-ObjectFactory.Initialize(x =>
-{
-    x.For&lt;IService&gt;().Transient().Use&lt;Service&gt;();
-});
+x.For&lt;IService&gt;().Singleton().Use&lt;Service&gt;();
+                    </code></pre>
+                    <br />
+                    <pre><code data-trim contenteditable>
+x.For&lt;IService&gt;().Transient().Use&lt;Service&gt;();
                     </code></pre>
                 </section>
 
@@ -311,42 +303,32 @@ ObjectFactory.Initialize(x =>
 [Fact]
 public void WhatDoIHave()
 {
-    ObjectFactory.Initialize(x =>
+    var container = new Container(x =&gt;
     {
         x.For&lt;IService&gt;().Use&lt;Service&gt;();
     });
 
-    var whatDoIHave = ObjectFactory.WhatDoIHave();
-    Trace.Write(whatDoIHave);
+    var whatDoIHave = container.WhatDoIHave();
+
+    var expectedWhatDoIHave = @"
+
+===================================================================================================
+PluginType           Namespace        Lifecycle     Description                           Name
+---------------------------------------------------------------------------------------------------
+Func&lt;TResult&gt;        System           Transient     Open Generic Template for Func&lt;&gt;      (Default)
+---------------------------------------------------------------------------------------------------
+Func&lt;T, TResult&gt;     System           Transient     Open Generic Template for Func&lt;,&gt;     (Default)
+---------------------------------------------------------------------------------------------------
+IContainer           StructureMap     Singleton     Object:  StructureMap.Container       (Default)
+---------------------------------------------------------------------------------------------------
+IService             Core             Transient     Core.Service                          (Default)
+---------------------------------------------------------------------------------------------------
+Lazy&lt;T&gt;              System           Transient     Open Generic Template for Func&lt;&gt;      (Default)
+===================================================================================================";
+
+    Assert.Equal(expectedWhatDoIHave, whatDoIHave);
 }
                     </code></pre>
-                    <small><pre><code data-trim contenteditable>
-===========================================================================================================
-Configuration Sources:
-
-0)   Registry:  StructureMap.InitializationExpression, StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223
-1)   Registry:  StructureMap.Configuration.DSL.Registry, StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223
-
-
-==================================================================================================================================================================================
-PluginType                               Name                                     Description
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Func`1&lt;TResult&gt; (Func`1&lt;TResult&gt;)
-Scoped as:  Transient
-
-                                         b359bd4c-b815-4d34-a7db-3e33845a03ca
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-IService (Core.IService)                 fda972a8-a53c-485f-9c3c-ee0fb3dc58a5     Configured Instance of Core.Service, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-Scoped as:  Transient
-
-                                         fda972a8-a53c-485f-9c3c-ee0fb3dc58a5     Configured Instance of Core.Service, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-IContainer (StructureMap.IContainer)     6bcdf062-92f6-4b4c-a55c-67fd28d1ee8b     Object:  StructureMap.Container
-Scoped as:  Transient
-
-                                         6bcdf062-92f6-4b4c-a55c-67fd28d1ee8b     Object:  StructureMap.Container
-==================================================================================================================================================================================
-                    </code></pre></small>
                 </section>
 
                 <section>
