@@ -294,6 +294,23 @@ x.For&lt;IService&gt;().Transient().Use&lt;Service&gt;();
                 </section>
 
                 <section>
+                    <h1>Validation</h1>
+                    <pre><code data-trim contenteditable>
+[Fact]
+public void MissingRequiredConstructorArgument()
+{
+    var container = new Container(x =&gt;
+    {
+        x.For&lt;IService&gt;().Use&lt;ServiceWithCtorArg&gt;();
+    });
+
+    Assert.Throws&lt;StructureMapConfigurationException&gt;(
+        () =&gt; container.AssertConfigurationIsValid());
+}
+                    </code></pre>
+                </section>
+
+                <section>
                     <h1>Troubleshooting</h1>
                     <img src="https://i.chzbgr.com/maxW500/4226478080/hDEAEFE01/" />
                 </section>
