@@ -301,6 +301,31 @@ x.For&lt;IService&gt;().Transient().Use&lt;Service&gt;();
                 <section>
                     <pre><code data-trim contenteditable>
 [Fact]
+public void ShowBuildPlan()
+{
+    var container = new Container(x =&gt;
+    {
+        x.For&lt;IService&gt;().Use&lt;Service&gt;();
+    });
+
+    var buildPlan = container.Model.For&lt;IService&gt;()
+        .Default
+        .DescribeBuildPlan();
+
+    var expectedBuildPlan =
+@"PluginType: Core.IService
+Lifecycle: Transient
+new Service()
+";
+
+    Assert.Equal(expectedBuildPlan, buildPlan);
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <pre><code data-trim contenteditable>
+[Fact]
 public void WhatDoIHave()
 {
     var container = new Container(x =&gt;
