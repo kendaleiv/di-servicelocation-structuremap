@@ -58,6 +58,7 @@
     <Compile Include="BasicConfigationTests.cs" />
     <Compile Include="DecoratorTests.cs" />
     <Compile Include="ExtraInitializationTests.cs" />
+    <Compile Include="HelpfulErrorsTests.cs" />
     <Compile Include="LifetimeTests.cs" />
     <Compile Include="RegistryTests.cs" />
     <Compile Include="ScanTests.cs" />
